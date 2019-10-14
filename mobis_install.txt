@@ -1,0 +1,28 @@
+
+설치 명령어 : dpkg -i *.deb
+
+1. 자바 설치 확인, 없으면 :  openjdk-8-jdk 폴더
+2. python2.7 설치 확인, 없으면 : python 폴더 내 1, 2, 3 순서대로 설치
+    1. 1_base : python 패키지
+    2. 2_dev : python-dev 패키지
+    3. 3_pip : python-pip 패키지 
+    4. 설치 과정에서 dpkg: error processing archive python_2.7. 등의 에러 발생 시 : 패키지 설치 순서 관련 이슈이므로 다시 한번 dpkg -i *.deb 명령 실행
+3. nvidia driver 설치 확인, 없으면
+    1. python 설치 과정에서 gcc, make 설치. gcc, make 만 별도 설치 필요 시 python-dev, python-pip 폴더 내의 해당 deb 파일 설치
+    2. /etc/modprobe.d/blacklist.conf     -> blacklist nouveau 추가 
+    3. echo options nouveau modeset=0 | sudo tee -a /etc/modprobe.d/nouveau-kms.conf
+    4. update-initramfs -u
+    5. reboot
+    6. 재부팅 후 lsmod | grep nouv 로 nouveau 종료되었는지 확인
+    7. /etc/init.d/lightdm stop , 경로 없으면 service lightdm stop    OR   service gdm stop 
+    8.  NVIDIA-Linux-x86_64-xxx.run 실행, 설치 
+4. cuda 설치 확인, 없으면 : nvidia-cuda-toolkit9.1.85 폴더 
+5. docker 설치 확인, 없으면 docker 폴더 내 1,2 순서대로 설치 : 0_apt_base : docker repository 환경 구성 설치 파일, 폐쇄망에서는 설치X 
+    1. 1_docker_ce 
+    2. 2_nvidia_docker
+    3. sudo pkill -SIGHUP dockerd
+6. nfs 패키지 설치 : nfs 폴더
+7. pip 패키지 설치 : pip 폴더
+    1. whl 파일은 pip install *.whl 로 설치
+    2. tar 파일은  tar -zxvf 압축해제 후 -> cd xxx -> python setup.py install
+8. 기타 : netstat 실행시 필요한 net-tools : openssh-server 폴더 내 deb 파일 설치 
